@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,7 +27,6 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: height * 0.04),
 
                 // Logo
-                // IungoLogo(size: width * 0.21),
                 Image.asset(
                   'assets/images/iungo-logo.png',
                   width: 139.17.w,
@@ -79,6 +79,7 @@ class LoginScreen extends StatelessWidget {
                             placeholder: 'Type your email here',
                             onChanged: authProvider.setEmail,
                             keyboardType: TextInputType.emailAddress,
+                            hasError: authProvider.hasLoginError,
                           ),
 
                           SizedBox(height: height * 0.02),
@@ -92,6 +93,7 @@ class LoginScreen extends StatelessWidget {
                             onToggleVisibility:
                                 authProvider.togglePasswordVisibility,
                             onChanged: authProvider.setPassword,
+                            hasError: authProvider.hasLoginError,
                           ),
 
                           // Error Message
@@ -102,9 +104,14 @@ class LoginScreen extends StatelessWidget {
                                 right: width * 0.053,
                                 top: 8,
                               ),
-                              child: Text(
-                                authProvider.errorMessage,
-                                style: AppTheme.errorText,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  authProvider.errorMessage,
+                                  style: AppTheme.pLight.copyWith(
+                                    color: AppTheme.errorRed,
+                                  ),
+                                ),
                               ),
                             ),
 
@@ -116,7 +123,6 @@ class LoginScreen extends StatelessWidget {
                             onPressed: () async {
                               final success = await authProvider.login();
                               if (success && context.mounted) {
-                                // Navigate to home or dashboard
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Login successful!'),
@@ -135,9 +141,12 @@ class LoginScreen extends StatelessWidget {
                             child: TextButton(
                               onPressed: () {
                                 authProvider.clearError();
-                                Navigator.pushNamed(
+                                Navigator.push(
                                   context,
-                                  '/forgot-password',
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordScreen(),
+                                  ),
                                 );
                               },
                               child: Text(

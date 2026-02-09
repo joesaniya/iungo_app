@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'reset_password_screen.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -26,7 +27,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                 SizedBox(height: height * 0.04),
 
                 // Logo
-                // IungoLogo(size: width * 0.21),
                 Image.asset(
                   'assets/images/iungo-logo.png',
                   width: 139.17.w,
@@ -85,6 +85,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                             initialValue: 'johndoe@email.com',
                             onChanged: authProvider.setEmail,
                             keyboardType: TextInputType.emailAddress,
+                            hasError: authProvider.hasForgotPasswordError,
                           ),
 
                           // Error Message
@@ -95,9 +96,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 right: width * 0.053,
                                 top: 8,
                               ),
-                              child: Text(
-                                authProvider.errorMessage,
-                                style: AppTheme.errorText,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  authProvider.errorMessage,
+                                  style: AppTheme.pLight.copyWith(
+                                    color: AppTheme.errorRed,
+                                  ),
+                                ),
                               ),
                             ),
 
@@ -107,10 +113,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                           CustomButton(
                             text: 'Reset password',
                             onPressed: () async {
-                              final success = await authProvider
-                                  .resetPassword();
+                              final success = await authProvider.resetPassword();
                               if (success && context.mounted) {
-                                Navigator.pushNamed(context, '/reset-password');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ResetPasswordScreen(),
+                                  ),
+                                );
                               }
                             },
                             isLoading: authProvider.isLoading,
@@ -130,3 +140,4 @@ class ForgotPasswordScreen extends StatelessWidget {
     );
   }
 }
+

@@ -6,8 +6,8 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_input_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SetPasswordScreen extends StatelessWidget {
-  const SetPasswordScreen({Key? key}) : super(key: key);
+class SetPasswordScreen2 extends StatelessWidget {
+  const SetPasswordScreen2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,6 @@ class SetPasswordScreen extends StatelessWidget {
                             onChanged: authProvider.setEmail,
                             keyboardType: TextInputType.emailAddress,
                             initialValue: authProvider.email,
-                            hasError: authProvider.hasSetPasswordError,
                           ),
 
                           SizedBox(height: height * 0.02),
@@ -93,7 +92,6 @@ class SetPasswordScreen extends StatelessWidget {
                             onToggleVisibility:
                                 authProvider.togglePasswordVisibility,
                             onChanged: authProvider.setPassword,
-                            hasError: authProvider.hasSetPasswordError,
                           ),
 
                           SizedBox(height: height * 0.02),
@@ -103,12 +101,10 @@ class SetPasswordScreen extends StatelessWidget {
                             label: 'Confirm password',
                             placeholder: 'Re-enter your password',
                             isPassword: true,
-                            isPasswordVisible:
-                                authProvider.isConfirmPasswordVisible,
+                            isPasswordVisible: authProvider.isConfirmPasswordVisible,
                             onToggleVisibility:
                                 authProvider.toggleConfirmPasswordVisibility,
                             onChanged: authProvider.setConfirmPassword,
-                            hasError: authProvider.hasSetPasswordError,
                           ),
 
                           // Error Message
@@ -119,14 +115,9 @@ class SetPasswordScreen extends StatelessWidget {
                                 right: width * 0.053,
                                 top: 8,
                               ),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  authProvider.errorMessage,
-                                  style: AppTheme.pLight.copyWith(
-                                    color: AppTheme.errorRed,
-                                  ),
-                                ),
+                              child: Text(
+                                authProvider.errorMessage,
+                                style: AppTheme.errorText,
                               ),
                             ),
 
@@ -136,9 +127,9 @@ class SetPasswordScreen extends StatelessWidget {
                           CustomButton(
                             text: 'Set password',
                             onPressed: () async {
-                              final success = await authProvider
-                                  .submitSetPassword();
+                             final success = await authProvider.submitSetPassword();
                               if (success && context.mounted) {
+                                // Navigate to home or dashboard
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Password set successfully!'),

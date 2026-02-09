@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iungo_application/Business-Logic/common-provider.dart';
-import 'package:iungo_application/screens/forgot_password_screen.dart';
-import 'package:iungo_application/screens/login_screen.dart';
-import 'package:iungo_application/screens/reset_password_screen.dart';
-import 'package:iungo_application/screens/set_password_screen.dart';
 import 'package:iungo_application/screens/splash_screen.dart';
 import 'package:iungo_application/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +15,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -41,15 +38,7 @@ class MyApp extends StatelessWidget {
               ),
               useMaterial3: true,
             ),
-            // initialRoute: '/',
-            routes: {
-              '/': (context) => const SplashScreen(),
-              '/login': (context) => const LoginScreen(),
-              '/forgot-password': (context) => const ForgotPasswordScreen(),
-              '/reset-password': (context) => const ResetPasswordScreen(),
-              '/set-password': (context) => const SetPasswordScreen(),
-            },
-            home: SplashScreen(),
+            home: const SplashScreen(),
           );
         },
       ),

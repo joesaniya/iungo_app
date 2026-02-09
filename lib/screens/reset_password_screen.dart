@@ -5,6 +5,7 @@ import '../theme/app_theme.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'login_screen.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -23,7 +24,6 @@ class ResetPasswordScreen extends StatelessWidget {
             height: height - MediaQuery.of(context).padding.top,
             child: Column(
               children: [
-                // Header
                 SizedBox(height: height * 0.04),
 
                 // Logo
@@ -34,7 +34,6 @@ class ResetPasswordScreen extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
 
-                // IungoLogo(size: width * 0.21),
                 SizedBox(height: height * 0.05),
 
                 // Reset Password Card
@@ -88,6 +87,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             onToggleVisibility:
                                 authProvider.togglePasswordVisibility,
                             onChanged: authProvider.setPassword,
+                            hasError: authProvider.hasResetPasswordError,
                           ),
 
                           SizedBox(height: height * 0.02),
@@ -102,6 +102,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             onToggleVisibility:
                                 authProvider.toggleConfirmPasswordVisibility,
                             onChanged: authProvider.setConfirmPassword,
+                            hasError: authProvider.hasResetPasswordError,
                           ),
 
                           // Error Message
@@ -112,9 +113,14 @@ class ResetPasswordScreen extends StatelessWidget {
                                 right: width * 0.053,
                                 top: 8,
                               ),
-                              child: Text(
-                                authProvider.errorMessage,
-                                style: AppTheme.errorText,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  authProvider.errorMessage,
+                                  style: AppTheme.pLight.copyWith(
+                                    color: AppTheme.errorRed,
+                                  ),
+                                ),
                               ),
                             ),
 
@@ -125,7 +131,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             text: 'Reset password',
                             onPressed: () async {
                               final success = await authProvider
-                                  .setNewPassword();
+                                  .submitResetPassword(); // Changed from resetPassword()
                               if (success && context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -133,9 +139,11 @@ class ResetPasswordScreen extends StatelessWidget {
                                     backgroundColor: AppTheme.successGreen,
                                   ),
                                 );
-                                Navigator.pushNamedAndRemoveUntil(
+                                Navigator.pushAndRemoveUntil(
                                   context,
-                                  '/login',
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginScreen(),
+                                  ),
                                   (route) => false,
                                 );
                               }
