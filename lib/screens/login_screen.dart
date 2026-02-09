@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iungo_application/screens/Dashboard_screen.dart';
 import 'package:provider/provider.dart';
 import '../Business-Logic/auth_provider.dart';
 import '../theme/app_theme.dart';
@@ -123,6 +124,25 @@ class LoginScreen extends StatelessWidget {
                             onPressed: () async {
                               final success = await authProvider.login();
                               if (success && context.mounted) {
+                                // Navigate to Dashboard
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const DashboardScreen(),
+                                  ),
+                                  (route) => false,
+                                );
+                              }
+                            },
+                            isLoading: authProvider.isLoading,
+                          ),
+
+                          /* CustomButton(
+                            text: 'Log in',
+                            onPressed: () async {
+                              final success = await authProvider.login();
+                              if (success && context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Login successful!'),
@@ -132,8 +152,7 @@ class LoginScreen extends StatelessWidget {
                               }
                             },
                             isLoading: authProvider.isLoading,
-                          ),
-
+                          ),*/
                           SizedBox(height: height * 0.02),
 
                           // Forgot password link

@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:iungo_application/screens/dashboard_screen.dart';
 import 'package:iungo_application/screens/login_screen.dart';
-import 'package:iungo_application/screens/set_password_screen.dart';
-import 'package:iungo_application/screens/set_password_screen_2.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../services/auth_storage.dart';
 
 class SplashProvider extends ChangeNotifier {
   double _opacity = 0.0;
   bool _isVisible = false;
+  final AuthStorage _authStorage = AuthStorage();
 
   double get opacity => _opacity;
   bool get isVisible => _isVisible;
@@ -23,12 +21,20 @@ class SplashProvider extends ChangeNotifier {
     _opacity = 1.0;
     notifyListeners();
 
-    Timer(const Duration(seconds: 5), () async {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-        (route) => false,
-      );
+    Timer(const Duration(seconds: 3), () async {
+      // Check login status
+      final isLoggedIn = await _authStorage.isLoggedIn();
+
+      if (context.mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                isLoggedIn ? const DashboardScreen() : const LoginScreen(),
+          ),
+          (route) => false,
+        );
+      }
     });
   }
 }
