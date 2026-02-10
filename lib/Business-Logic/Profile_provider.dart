@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer';
 import '../services/auth_storage.dart';
 
-class DashboardProvider extends ChangeNotifier {
+class ProfileProvider extends ChangeNotifier {
   final AuthStorage _authStorage = AuthStorage();
 
   Map<String, dynamic>? _userData;
@@ -11,6 +11,7 @@ class DashboardProvider extends ChangeNotifier {
   String _userName = '';
   String _userType = '';
   String _userEmail = '';
+  List<String> _empAccessPages = [];
 
   Map<String, dynamic>? get userData => _userData;
   bool get isLoading => _isLoading;
@@ -18,8 +19,9 @@ class DashboardProvider extends ChangeNotifier {
   String get userName => _userName;
   String get userType => _userType;
   String get userEmail => _userEmail;
+  List<String> get empAccessPages => _empAccessPages;
 
-  DashboardProvider() {
+  ProfileProvider() {
     _loadUserData();
   }
 
@@ -38,6 +40,16 @@ class DashboardProvider extends ChangeNotifier {
         _userName = _userData!['username'] ?? 'User';
         _userType = _userData!['user_type'] ?? '';
         _userEmail = _userData!['email'] ?? '';
+        // Parse access pages (comma-separated string to list)
+        String accessPagesString = _userData!['emp_access_pages'] ?? '';
+        if (accessPagesString.isNotEmpty) {
+          _empAccessPages = accessPagesString
+              .split(',')
+              .map((e) => e.trim())
+              .toList();
+        } else {
+          _empAccessPages = [];
+        }
 
         log('User ID: $_userId');
         log('Username: $_userName');
@@ -50,6 +62,7 @@ class DashboardProvider extends ChangeNotifier {
       _userEmail = '';
       _userType = '';
       _userId = '';
+      _empAccessPages = [];
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -58,6 +71,10 @@ class DashboardProvider extends ChangeNotifier {
 
   Future<void> refreshUserData() async {
     await _loadUserData();
+  }
+
+  bool hasAccessToPage(String pageId) {
+    return _empAccessPages.contains(pageId);
   }
 }
 

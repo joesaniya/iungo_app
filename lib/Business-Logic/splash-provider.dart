@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:iungo_application/screens/dashboard_screen.dart';
+import 'package:iungo_application/screens/Profile_screen.dart';
 import 'package:iungo_application/screens/login_screen.dart';
 import '../services/auth_storage.dart';
 
@@ -30,7 +30,7 @@ class SplashProvider extends ChangeNotifier {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                isLoggedIn ? const DashboardScreen() : const LoginScreen(),
+                isLoggedIn ? ProfileScreen() : const LoginScreen(),
           ),
           (route) => false,
         );

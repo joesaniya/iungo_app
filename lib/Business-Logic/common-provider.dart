@@ -1,4 +1,4 @@
-import 'package:iungo_application/Business-Logic/Dashboard_provider.dart';
+import 'package:iungo_application/Business-Logic/Profile_provider.dart';
 import 'package:iungo_application/Business-Logic/auth_provider.dart';
 import 'package:iungo_application/Business-Logic/splash-provider.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +16,6 @@ class ProviderHelperClass {
     ChangeNotifierProvider(create: (context) => SplashProvider(context)),
 
     ChangeNotifierProvider(create: (_) => AuthProvider()),
-    ChangeNotifierProvider(create: (_) => DashboardProvider()),
+    ChangeNotifierProvider(create: (_) => ProfileProvider()),
   ];
 }

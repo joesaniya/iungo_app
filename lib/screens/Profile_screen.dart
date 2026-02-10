@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:iungo_application/Business-Logic/Dashboard_provider.dart';
+
+import 'package:iungo_application/Business-Logic/Profile_provider.dart';
 import 'package:iungo_application/Business-Logic/auth_provider.dart';
 import 'package:iungo_application/screens/login_screen.dart';
 import 'package:iungo_application/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => DashboardProvider(),
-      child: Consumer<DashboardProvider>(
-        builder: (context, dashboardProvider, _) {
+      create: (_) => ProfileProvider(),
+      child: Consumer<ProfileProvider>(
+        builder: (context, profileProvider, _) {
           return Scaffold(
             backgroundColor: AppTheme.lightNeutral100,
             appBar: AppBar(
@@ -45,7 +46,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: dashboardProvider.isLoading
+            body: profileProvider.isLoading
                 ? const Center(
                     child: CircularProgressIndicator(
                       color: AppTheme.primaryPurple,
@@ -76,12 +77,12 @@ class DashboardScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                dashboardProvider.userName,
+                                profileProvider.userName,
                                 style: AppTheme.h2.copyWith(
                                   color: AppTheme.primaryPurple,
                                 ),
                               ),
-                              if (dashboardProvider.userType.isNotEmpty) ...[
+                              if (profileProvider.userType.isNotEmpty) ...[
                                 const SizedBox(height: 4),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
@@ -95,7 +96,7 @@ class DashboardScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(
-                                    dashboardProvider.userType,
+                                    profileProvider.userType,
                                     style: AppTheme.pLight.copyWith(
                                       color: AppTheme.primaryPurple,
                                       fontWeight: FontWeight.w600,
@@ -128,22 +129,23 @@ class DashboardScreen extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              _buildInfoRow(
-                                'User ID',
-                                dashboardProvider.userId,
-                              ),
+                              _buildInfoRow('User ID', profileProvider.userId),
                               const Divider(height: 24),
                               _buildInfoRow(
                                 'Username',
-                                dashboardProvider.userName,
+                                profileProvider.userName,
                               ),
+                              const Divider(height: 24),
+                              _buildInfoRow('Email', profileProvider.userEmail),
+                              const Divider(height: 24),
+                              _buildInfoRow('Role', profileProvider.userType),
                               const Divider(height: 24),
                               _buildInfoRow(
-                                'Email',
-                                dashboardProvider.userEmail,
+                                'Access Pages',
+                                profileProvider.empAccessPages.isEmpty
+                                    ? 'No access'
+                                    : profileProvider.empAccessPages.join(', '),
                               ),
-                              const Divider(height: 24),
-                              _buildInfoRow('Role', dashboardProvider.userType),
                             ],
                           ),
                         ),

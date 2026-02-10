@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iungo_application/screens/Dashboard_screen.dart';
+import 'package:iungo_application/screens/Profile_screen.dart';
 import 'package:provider/provider.dart';
 import '../Business-Logic/auth_provider.dart';
 import '../theme/app_theme.dart';
@@ -129,7 +129,7 @@ class LoginScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const DashboardScreen(),
+                                        const ProfileScreen(),
                                   ),
                                   (route) => false,
                                 );
