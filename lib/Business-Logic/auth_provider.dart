@@ -120,6 +120,91 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     // Client-side validation
+    if (_email.isEmpty || _password.isEmpty) {
+      _errorMessage = 'Please fill in all fields';
+      _hasLoginError = true;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+
+    if (!_email.contains('@')) {
+      _errorMessage = 'Please enter a valid email';
+      _hasLoginError = true;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+
+    try {
+      // Get device information
+      final deviceInfo = await _getDeviceInfo();
+
+      // Call API
+      final response = await _apiService.login(
+        username: _email,
+        password: _password,
+        deviceId: deviceInfo['device_id']!,
+        deviceName: deviceInfo['device_name']!,
+        deviceModal: deviceInfo['device_modal']!,
+      );
+
+      log('Login Response: $response');
+
+      if (response == null) {
+        _errorMessage = 'Network error. Please check your connection.';
+        _hasLoginError = true;
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
+      // Check response structure: {"code": 200, "data": {...}}
+      if (response['code'] == 200 && response['data'] != null) {
+        final userData = response['data'] as Map<String, dynamic>;
+
+        log('Login successful! User data: $userData');
+
+        // Save login state to SharedPreferences
+        await _authStorage.saveLoginState(isLoggedIn: true, userData: userData);
+
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _errorMessage = 'Login failed. Please try again.';
+        _hasLoginError = true;
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      log('Login exception: $e');
+
+      // Extract the exact error message from the exception
+      String errorText = e.toString();
+
+      // Remove "Exception: " prefix if present
+      if (errorText.startsWith('Exception: ')) {
+        errorText = errorText.replaceFirst('Exception: ', '');
+      }
+
+      // Set the exact error message from API
+      _errorMessage = errorText;
+      _hasLoginError = true;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> login1() async {
+    _isLoading = true;
+    _errorMessage = '';
+    _hasLoginError = false;
+    notifyListeners();
+
+    // Client-side validation
     if (_email.isEmpty ||
         _password.isEmpty ||
         !_email.contains('@') ||
@@ -162,10 +247,7 @@ class AuthProvider extends ChangeNotifier {
         log('Login successful! User data: $userData');
 
         // Save login state to SharedPreferences
-        await _authStorage.saveLoginState(
-          isLoggedIn: true,
-          userData: userData,
-        );
+        await _authStorage.saveLoginState(isLoggedIn: true, userData: userData);
 
         _isLoading = false;
         notifyListeners();
@@ -325,7 +407,9 @@ class AuthProvider extends ChangeNotifier {
     _hasSetPasswordError = false;
     notifyListeners();
   }
-}/*import 'package:flutter/material.dart';
+}
+
+/*import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:iungo_application/services/auth_api_service.dart';
 import 'dart:io';

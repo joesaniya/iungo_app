@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      "Ingo App",
+                      "Iungo App",
                       style: GoogleFonts.poppins(
                         fontSize: 26,
                         color: Colors.black,
