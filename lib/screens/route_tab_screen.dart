@@ -3,14 +3,12 @@ import 'package:iungo_application/Business-Logic/route_tab_provider.dart';
 import 'package:iungo_application/widgets/bar_chart_data_widget.dart';
 import 'package:iungo_application/widgets/custom_date_picker.dart';
 import 'package:iungo_application/widgets/custom_dropdown_widget.dart';
-import 'package:iungo_application/widgets/custom_range_input_widget.dart';
 import 'package:iungo_application/widgets/donut_chart_widget.dart';
 import 'package:iungo_application/widgets/metric_card_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/app_colors.dart';
-
 
 class RouteTab extends StatefulWidget {
   const RouteTab({super.key});
@@ -141,10 +139,7 @@ class _RouteTabState extends State<RouteTab> {
                                   ),
                                 ),
                               )
-                            : Text(
-                                'Apply Filter',
-                                style: AppTheme.buttonText,
-                              ),
+                            : Text('Apply Filter', style: AppTheme.buttonText),
                       ),
                     ),
                   ],
@@ -250,11 +245,13 @@ class _RouteTabState extends State<RouteTab> {
     int index = 0;
 
     chartData.forEach((key, value) {
-      data.add(DonutChartData(
-        label: key,
-        value: double.tryParse(value.toString()) ?? 0,
-        color: colors[index % colors.length],
-      ));
+      data.add(
+        DonutChartData(
+          label: key,
+          value: double.tryParse(value.toString()) ?? 0,
+          color: colors[index % colors.length],
+        ),
+      );
       index++;
     });
 
@@ -280,11 +277,13 @@ class _RouteTabState extends State<RouteTab> {
     int index = 0;
 
     chartData.forEach((key, value) {
-      data.add(BarChartData(
-        label: key,
-        value: double.tryParse(value.toString()) ?? 0,
-        color: colors[index % colors.length],
-      ));
+      data.add(
+        BarChartData(
+          label: key,
+          value: double.tryParse(value.toString()) ?? 0,
+          color: colors[index % colors.length],
+        ),
+      );
       index++;
     });
 
