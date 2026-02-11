@@ -276,30 +276,41 @@ class WasteManagementService {
     String? wasteType,
     String? vehicleId,
   }) async {
-    Map<String, dynamic> requestBody = {};
+    Map<String, dynamic> requestBody = {'view_name': viewName};
 
-    // For route tab - always include all fields
+    // For route tab - only include non-null/non-empty parameters
     if (zone != null || route != null || vehicle != null || region != null) {
-      // REMOVED THE HARDCODED TEST DATA - Use the actual parameters
-      requestBody = {
-        'zone': zone ?? '',
-        'route': route ?? '',
-        'vehicle': vehicle ?? '',
-        'region': region ?? '',
-        'from_date':
-            fromDate ?? '', // Fixed: now using actual fromDate parameter
-        'to_date': toDate ?? '', // Fixed: now using actual toDate parameter
-        'view_name': viewName,
-      };
+      // Only add parameters if they have actual values
+      if (zone != null && zone.isNotEmpty) {
+        requestBody['zone'] = zone;
+      }
+      if (route != null && route.isNotEmpty) {
+        requestBody['route'] = route;
+      }
+      if (vehicle != null && vehicle.isNotEmpty) {
+        requestBody['vehicle'] = vehicle;
+      }
+      if (region != null && region.isNotEmpty) {
+        requestBody['region'] = region;
+      }
+      if (fromDate != null && fromDate.isNotEmpty) {
+        requestBody['from_date'] = fromDate;
+      }
+      if (toDate != null && toDate.isNotEmpty) {
+        requestBody['to_date'] = toDate;
+      }
     }
-    // For activity tab
+    // For activity tab - only include non-null/non-empty parameters
     else {
-      requestBody = {
-        'disposal_area': disposalArea ?? '',
-        'waste_type': wasteType ?? '',
-        'vehicle_id': vehicleId ?? '',
-        'view_name': viewName,
-      };
+      if (disposalArea != null && disposalArea.isNotEmpty) {
+        requestBody['disposal_area'] = disposalArea;
+      }
+      if (wasteType != null && wasteType.isNotEmpty) {
+        requestBody['waste_type'] = wasteType;
+      }
+      if (vehicleId != null && vehicleId.isNotEmpty) {
+        requestBody['vehicle_id'] = vehicleId;
+      }
     }
 
     final response = await _dioClient.performCall(
