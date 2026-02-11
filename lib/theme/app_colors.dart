@@ -86,4 +86,6 @@ class AppColors {
   // Shadow colors with opacity
   static Color shadow9 = Colors.black.withOpacity(0.09);
   static Color shadow17 = Colors.black.withOpacity(0.17);
+
+  static const Color lightNeutral200 = Color(0xFFE0E0E0);
 }

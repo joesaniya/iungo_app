@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iungo_application/screens/waste_mangemt_screen_simple.dart';
 import 'package:iungo_application/theme/app_colors.dart';
 import 'package:iungo_application/screens/waste_management_screen.dart';
 
@@ -25,16 +26,10 @@ class MenuItem {
 
     // Prefer direct screen navigation over routes for better error handling
     if (screen != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => screen!),
-      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) => screen!));
     } else if (route != null) {
       // Use pushNamed with error handling
-      Navigator.pushNamed(
-        context,
-        route!,
-      ).catchError((error) {
+      Navigator.pushNamed(context, route!).catchError((error) {
         // Handle navigation error
         debugPrint('Navigation error: $error');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -64,7 +59,8 @@ class MenuConfig {
       id: '2',
       title: 'Waste\nmanagement',
       color: menuColor,
-      screen: const WasteManagementScreen(),
+      screen: const WasteManagementScreen1(),
+      // screen: const WasteManagementScreen(),
     ),
     '3': MenuItem(
       id: '3',
