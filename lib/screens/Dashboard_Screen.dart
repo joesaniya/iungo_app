@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:iungo_application/Business-Logic/Dashboard_provider.dart';
 import 'package:iungo_application/Business-Logic/auth_provider.dart';
 import 'package:iungo_application/models/menu_item.dart';
 import 'package:iungo_application/screens/login_screen.dart';
 import 'package:iungo_application/theme/app_theme.dart';
-import 'package:iungo_application/widgets/client_selector.dart';
+import 'package:iungo_application/widgets/custom_appbar_widget.dart';
 import 'package:iungo_application/widgets/custom_menu_icon.dart';
 import 'package:provider/provider.dart';
 
@@ -23,33 +22,10 @@ class DashboardScreen extends StatelessWidget {
           );
           return Scaffold(
             backgroundColor: AppTheme.white,
-            appBar: AppBar(
-              backgroundColor: AppTheme.white,
-              elevation: 0,
-              leading: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Image.asset(
-                  'assets/images/iungo-logo.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-              title: const ClientSelector(),
-              actions: [
-                IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/svg-icons/menu.svg',
-                    width: 20,
-                    height: 17.33,
-                    colorFilter: const ColorFilter.mode(
-                      Color(0xFF354252),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  onPressed: () {
-                    _showMenuDrawer(context, dashboardProvider);
-                  },
-                ),
-              ],
+            appBar: CustomAppBar(
+              onMenuPressed: () {
+                _showMenuDrawer(context, dashboardProvider);
+              },
             ),
             body: dashboardProvider.isLoading
                 ? const Center(
@@ -102,11 +78,9 @@ class DashboardScreen extends StatelessWidget {
 
   Widget _buildMenuCard(BuildContext context, MenuItem menuItem) {
     return GestureDetector(
-      onTap: menuItem.comingSoon
-          ? null
-          : () {
-              Navigator.pushNamed(context, menuItem.route);
-            },
+      onTap: () {
+        menuItem.navigate(context);
+      },
       child: Container(
         decoration: BoxDecoration(
           color: AppTheme.white,
@@ -218,7 +192,8 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
-}/*import 'package:flutter/material.dart';
+}
+/*import 'package:flutter/material.dart';
 import 'package:iungo_application/Business-Logic/Dashboard_provider.dart';
 import 'package:iungo_application/Business-Logic/auth_provider.dart';
 import 'package:iungo_application/models/menu_item.dart';
