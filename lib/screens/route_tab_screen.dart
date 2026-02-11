@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iungo_application/Business-Logic/route_tab_provider.dart';
 import 'package:iungo_application/widgets/bar_chart_data_widget.dart';
+import 'package:iungo_application/widgets/custom_date_picker.dart';
 import 'package:iungo_application/widgets/custom_dropdown_widget.dart';
 import 'package:iungo_application/widgets/custom_range_input_widget.dart';
 import 'package:iungo_application/widgets/donut_chart_widget.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/app_colors.dart';
+
 
 class RouteTab extends StatefulWidget {
   const RouteTab({super.key});
@@ -59,13 +61,25 @@ class _RouteTabState extends State<RouteTab> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Date Range Picker
-                    CustomDateRangeInput(
-                      fromDate: provider.fromDate,
-                      toDate: provider.toDate,
-                      onDateRangeSelected: (from, to) {
-                        provider.setDateRange(from, to);
+                    // From Date
+                    CustomDateInput(
+                      label: 'From Date',
+                      selectedDate: provider.fromDate,
+                      onDateSelected: (date) {
+                        provider.setDateRange(date, provider.toDate);
                       },
+                      isFromDate: true,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // To Date
+                    CustomDateInput(
+                      label: 'To Date',
+                      selectedDate: provider.toDate,
+                      onDateSelected: (date) {
+                        provider.setDateRange(provider.fromDate, date);
+                      },
+                      isFromDate: false,
                     ),
                     const SizedBox(height: 16),
 

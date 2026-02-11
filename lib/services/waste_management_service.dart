@@ -125,20 +125,29 @@ class WasteManagementService {
     String? wasteType,
     String? vehicleId,
   }) async {
-    Map<String, dynamic> requestBody = {'view_name': viewName};
+    Map<String, dynamic> requestBody = {};
 
-    // Add route-related parameters
-    if (zone != null) requestBody['zone'] = zone;
-    if (route != null) requestBody['route'] = route;
-    if (vehicle != null) requestBody['vehicle'] = vehicle;
-    if (region != null) requestBody['region'] = region;
-    if (fromDate != null) requestBody['from_date'] = fromDate;
-    if (toDate != null) requestBody['to_date'] = toDate;
-
-    // Add activity-related parameters
-    if (disposalArea != null) requestBody['disposal_area'] = disposalArea;
-    if (wasteType != null) requestBody['waste_type'] = wasteType;
-    if (vehicleId != null) requestBody['vehicle_id'] = vehicleId;
+    // For route tab - always include all fields
+    if (zone != null || route != null || vehicle != null || region != null) {
+      requestBody = {
+        'zone': zone ?? '',
+        'route': route ?? '',
+        'vehicle': vehicle ?? '',
+        'region': region ?? '',
+        'from_date': fromDate ?? '',
+        'to_date': toDate ?? '',
+        'view_name': viewName,
+      };
+    } 
+    // For activity tab
+    else {
+      requestBody = {
+        'disposal_area': disposalArea ?? '',
+        'waste_type': wasteType ?? '',
+        'vehicle_id': vehicleId ?? '',
+        'view_name': viewName,
+      };
+    }
 
     final response = await _dioClient.performCall(
       requestType: RequestType.post,

@@ -85,46 +85,46 @@ class RouteTabProvider extends ChangeNotifier {
     try {
       final fromDateStr = fromDate != null
           ? '${fromDate!.year}-${fromDate!.month.toString().padLeft(2, '0')}-${fromDate!.day.toString().padLeft(2, '0')}'
-          : null;
+          : '';
       final toDateStr = toDate != null
           ? '${toDate!.year}-${toDate!.month.toString().padLeft(2, '0')}-${toDate!.day.toString().padLeft(2, '0')}'
-          : null;
+          : '';
 
-      // Fetch all data in parallel
+      // Fetch all data in parallel with exact body format
       final results = await Future.wait([
         _service.fetchWasteData(
           viewName: 'total_waste_collected',
-          zone: selectedZone,
-          route: selectedRoute,
-          vehicle: selectedVehicle,
-          region: selectedRegion,
+          zone: selectedZone ?? '',
+          route: selectedRoute ?? '',
+          vehicle: selectedVehicle ?? '',
+          region: selectedRegion ?? '',
           fromDate: fromDateStr,
           toDate: toDateStr,
         ),
         _service.fetchWasteData(
           viewName: 'collection_completion',
-          zone: selectedZone,
-          route: selectedRoute,
-          vehicle: selectedVehicle,
-          region: selectedRegion,
+          zone: selectedZone ?? '',
+          route: selectedRoute ?? '',
+          vehicle: selectedVehicle ?? '',
+          region: selectedRegion ?? '',
           fromDate: fromDateStr,
           toDate: toDateStr,
         ),
         _service.fetchWasteData(
           viewName: 'co2_emission',
-          zone: selectedZone,
-          route: selectedRoute,
-          vehicle: selectedVehicle,
-          region: selectedRegion,
+          zone: selectedZone ?? '',
+          route: selectedRoute ?? '',
+          vehicle: selectedVehicle ?? '',
+          region: selectedRegion ?? '',
           fromDate: fromDateStr,
           toDate: toDateStr,
         ),
         _service.fetchWasteData(
           viewName: 'route_efficiency',
-          zone: selectedZone,
-          route: selectedRoute,
-          vehicle: selectedVehicle,
-          region: selectedRegion,
+          zone: selectedZone ?? '',
+          route: selectedRoute ?? '',
+          vehicle: selectedVehicle ?? '',
+          region: selectedRegion ?? '',
           fromDate: fromDateStr,
           toDate: toDateStr,
         ),
