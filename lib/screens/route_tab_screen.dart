@@ -185,6 +185,26 @@ class _RouteTabState extends State<RouteTab> {
                 ),
               const SizedBox(height: 16),
 
+              // Collection Completion Zone Distribution Chart - Only show if data is not empty
+              if (provider.collectionCompletion?.chartData != null &&
+                  _hasChartData(provider.collectionCompletion!.chartData!))
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: AppTheme.elevation9,
+                  ),
+                  child: DonutChart(
+                    data: _getZoneChartData(
+                      provider.collectionCompletion!.chartData!,
+                    ),
+                  ),
+                ),
+              if (provider.collectionCompletion?.chartData != null &&
+                  _hasChartData(provider.collectionCompletion!.chartData!))
+                const SizedBox(height: 16),
+
               // CO2 Emission & Route Efficiency Row
               Row(
                 children: [
@@ -246,7 +266,8 @@ class _RouteTabState extends State<RouteTab> {
 
     // Fallback: check if there are any keys besides metadata keys
     final dataKeys = chartData.keys.where(
-        (key) => key != 'labels' && key != 'values' && key != 'total_weight');
+      (key) => key != 'labels' && key != 'values' && key != 'total_weight',
+    );
 
     return dataKeys.isNotEmpty;
   }
