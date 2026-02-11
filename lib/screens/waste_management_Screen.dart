@@ -1,4 +1,190 @@
 import 'package:flutter/material.dart';
+import 'package:iungo_application/screens/bin_collection_data_tab.dart';
+import 'package:iungo_application/screens/fleet_efficiency_tab.dart';
+import 'package:iungo_application/screens/monitoring_service_tab.dart';
+import 'package:iungo_application/screens/weighing_details_tab.dart';
+import 'package:iungo_application/theme/app_theme.dart';
+import 'package:iungo_application/theme/app_colors.dart';
+import 'package:iungo_application/Business-Logic/waste_management_provider.dart';
+import 'package:iungo_application/widgets/custom_appbar_widget.dart';
+import 'package:iungo_application/widgets/custom_tab_bar_widget.dart';
+import 'package:iungo_application/widgets/date_range_picker_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+class WasteManagementScreen extends StatelessWidget {
+  const WasteManagementScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => WasteManagementProvider(),
+      child: Consumer<WasteManagementProvider>(
+        builder: (context, provider, _) {
+          return Scaffold(
+            backgroundColor: AppColors.white,
+            appBar: CustomAppBar(
+              onMenuPressed: () {
+                _showMenuDrawer(context);
+              },
+            ),
+            body: Column(
+              children: [
+                // Title and Date Range
+                _buildHeader(context, provider),
+
+                // Tab Bar
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: CustomTabBar(
+                    tabs: _getTabs(),
+                    selectedIndex: provider.selectedTabIndex,
+                    onTabSelected: provider.selectTab,
+                  ),
+                ),
+
+                // Content - Display selected tab
+                Expanded(child: _buildTabContent(provider)),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, WasteManagementProvider provider) {
+    final dateRangeText = provider.selectedDateRange == null
+        ? 'Date range'
+        : '${DateFormat('MMM d, yyyy').format(provider.selectedDateRange!.start)} - ${DateFormat('MMM d, yyyy').format(provider.selectedDateRange!.end)}';
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Text(
+              'Waste management',
+              style: AppTheme.h2.copyWith(
+                fontSize: 26,
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w500,
+                height: 32 / 26,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          GestureDetector(
+            onTap: () => _selectDateRange(context, provider),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.border, width: 1),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Text(
+                      dateRangeText,
+                      style: AppTheme.pStrong.copyWith(
+                        fontSize: 12,
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.calendar_today,
+                    size: 16,
+                    color: AppColors.textPrimary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<TabItem> _getTabs() {
+    return [
+      TabItem(title: 'Bin collection data'),
+      TabItem(title: 'Monitoring service'),
+      TabItem(title: 'Fleet efficiency'),
+      TabItem(title: 'Weighing details', comingSoon: true),
+    ];
+  }
+
+  Future<void> _selectDateRange(
+    BuildContext context,
+    WasteManagementProvider provider,
+  ) async {
+    final result = await showCustomDateRangePicker(
+      context: context,
+      initialDateRange: provider.selectedDateRange,
+    );
+
+    if (result != null) {
+      provider.setDateRange(result);
+    }
+  }
+
+  /// Returns the appropriate tab widget based on selected index
+  Widget _buildTabContent(WasteManagementProvider provider) {
+    switch (provider.selectedTabIndex) {
+      case 0:
+        return const BinCollectionDataTab();
+      case 1:
+        return const MonitoringServiceTab();
+      case 2:
+        return const FleetEfficiencyTab();
+      case 3:
+        return const WeighingDetailsTab();
+      default:
+        return const BinCollectionDataTab();
+    }
+  }
+
+  void _showMenuDrawer(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Menu', style: AppTheme.h2),
+            const SizedBox(height: 20),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                Navigator.pop(context);
+                // Add logout logic
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*import 'package:flutter/material.dart';
 import 'package:iungo_application/theme/app_theme.dart';
 import 'package:iungo_application/theme/app_colors.dart';
 import 'package:iungo_application/Business-Logic/waste_management_provider.dart';
@@ -443,7 +629,7 @@ class WasteManagementScreen extends StatelessWidget {
     );
   }
 }
-
+*/
 
   /*floatingActionButton: FloatingActionButton(
         onPressed: () {
