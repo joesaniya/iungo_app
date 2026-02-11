@@ -1,4 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class CustomMenuIcon extends StatelessWidget {
+  final String menuId;
+  final Color color;
+  final double size;
+
+  const CustomMenuIcon({
+    super.key,
+    required this.menuId,
+    required this.color,
+    this.size = 48,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      _getIconPath(menuId),
+      width: size,
+      height: size,
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+    );
+  }
+
+  String _getIconPath(String id) {
+    switch (id) {
+      case '1': // Contract Performance
+        return 'assets/svg-icons/contract-performance.svg';
+      case '2': // Waste Management
+        return 'assets/svg-icons/waste-management.svg';
+      case '3': // Cleaning
+        return 'assets/svg-icons/cleaning.svg';
+      case '4': // Compliance
+        return 'assets/svg-icons/compliance.svg';
+      case '5': // Technical Services
+        return 'assets/svg-icons/technical-services.svg';
+      case '6': // Spaces
+        return 'assets/svg-icons/spaces.svg';
+      case '7': // Wellbeing
+        return 'assets/svg-icons/wellbeing.svg';
+      default:
+        return 'assets/svg-icons/contract-performance.svg';
+    }
+  }
+}
+
+/*import 'package:flutter/material.dart';
 
 class CustomMenuIcon extends StatelessWidget {
   final String menuId;
@@ -380,4 +427,4 @@ class WellbeingIconPainter extends CustomPainter {
 }
 
 double cos(double angle) => (angle * 180 / 3.14159).toDouble();
-double sin(double angle) => (angle * 180 / 3.14159).toDouble();
+double sin(double angle) => (angle * 180 / 3.14159).toDouble();*/
