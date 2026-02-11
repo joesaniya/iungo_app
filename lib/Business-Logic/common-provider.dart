@@ -6,7 +6,6 @@ import 'package:iungo_application/Business-Logic/client_provider.dart';
 import 'package:iungo_application/Business-Logic/date_rande_picker_provider.dart';
 import 'package:iungo_application/Business-Logic/route_tab_provider.dart';
 import 'package:iungo_application/Business-Logic/splash-provider.dart';
-import 'package:iungo_application/Business-Logic/waste_management_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -28,7 +27,6 @@ class ProviderHelperClass {
     ChangeNotifierProvider(create: (_) => ActivityTabProvider()),
     ChangeNotifierProvider(create: (_) => RouteTabProvider()),
 
-    ChangeNotifierProvider(create: (_) => WasteManagementProvider()),
     ChangeNotifierProvider(create: (_) => DateRangePickerProvider()),
   ];
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iungo_application/screens/waste_mangemt_screen_simple.dart';
 import 'package:iungo_application/theme/app_colors.dart';
-import 'package:iungo_application/screens/waste_management_screen.dart';
 
 class MenuItem {
   final String id;
@@ -59,7 +58,7 @@ class MenuConfig {
       id: '2',
       title: 'Waste\nmanagement',
       color: menuColor,
-      screen: const WasteManagementScreen1(),
+      screen: WasteManagementScreen(),
       // screen: const WasteManagementScreen(),
     ),
     '3': MenuItem(

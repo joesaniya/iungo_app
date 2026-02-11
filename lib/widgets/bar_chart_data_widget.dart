@@ -39,122 +39,108 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
     final maxValue = widget.data
         .map((e) => e.value)
         .reduce((a, b) => a > b ? a : b);
-    final barHeight = 36.0; // Height for each bar item (24 + 12 padding)
-    final maxHeight = 400.0; // Maximum height before scrolling
-    final contentHeight =
-        widget.data.length * barHeight + 60; // +60 for axis labels
-    final needsScroll = contentHeight > maxHeight;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Bars section - scrollable if needed
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: needsScroll ? maxHeight - 60 : contentHeight - 60,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: widget.data.asMap().entries.map((entry) {
-                final index = entry.key;
-                final item = entry.value;
-                final percentage = maxValue > 0 ? item.value / maxValue : 0.0;
+        // Bars section - removed scrolling and height constraints
+        Column(
+          children: widget.data.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
+            final percentage = maxValue > 0 ? item.value / maxValue : 0.0;
 
-                return MouseRegion(
-                  onEnter: (_) {
-                    setState(() {
-                      _hoveredIndex = index;
-                    });
-                  },
-                  onExit: (_) {
-                    setState(() {
-                      _hoveredIndex = null;
-                    });
-                  },
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _hoveredIndex = _hoveredIndex == index ? null : index;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 70,
-                            child: Text(
-                              item.label,
-                              style: AppTheme.pStrong.copyWith(
-                                fontSize: 11,
-                                color: _hoveredIndex == index
-                                    ? item.color
-                                    : AppColors.textPrimary,
-                                fontWeight: _hoveredIndex == index
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
+            return MouseRegion(
+              onEnter: (_) {
+                setState(() {
+                  _hoveredIndex = index;
+                });
+              },
+              onExit: (_) {
+                setState(() {
+                  _hoveredIndex = null;
+                });
+              },
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _hoveredIndex = _hoveredIndex == index ? null : index;
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 70,
+                        child: Text(
+                          item.label,
+                          style: AppTheme.pStrong.copyWith(
+                            fontSize: 11,
+                            color: _hoveredIndex == index
+                                ? item.color
+                                : AppColors.textPrimary,
+                            fontWeight: _hoveredIndex == index
+                                ? FontWeight.w600
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: AppColors.lightNeutral200,
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Container(
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.lightNeutral200,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                ),
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  width:
-                                      MediaQuery.of(context).size.width *
-                                      percentage *
-                                      0.55,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    color: _hoveredIndex == index
-                                        ? item.color.withOpacity(0.9)
-                                        : item.color,
-                                    borderRadius: BorderRadius.circular(4),
-                                    boxShadow: _hoveredIndex == index
-                                        ? [
-                                            BoxShadow(
-                                              color: item.color.withOpacity(
-                                                0.4,
-                                              ),
-                                              blurRadius: 8,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ]
-                                        : null,
-                                  ),
-                                ),
-                                // Tooltip - positioned outside the bar
-                                if (_hoveredIndex == index)
-                                  Positioned(
-                                    left:
-                                        (MediaQuery.of(context).size.width *
-                                            percentage *
-                                            0.55) +
-                                        8,
-                                    top: -6,
-                                    child: _buildTooltip(item),
-                                  ),
-                              ],
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              width:
+                                  MediaQuery.of(context).size.width *
+                                  percentage *
+                                  0.55,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: _hoveredIndex == index
+                                    ? item.color.withOpacity(0.9)
+                                    : item.color,
+                                borderRadius: BorderRadius.circular(4),
+                                boxShadow: _hoveredIndex == index
+                                    ? [
+                                        BoxShadow(
+                                          color: item.color.withOpacity(0.4),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ]
+                                    : null,
+                              ),
                             ),
-                          ),
-                        ],
+                            // Tooltip - positioned outside the bar
+                            if (_hoveredIndex == index)
+                              Positioned(
+                                left:
+                                    (MediaQuery.of(context).size.width *
+                                        percentage *
+                                        0.55) +
+                                    8,
+                                top: -6,
+                                child: _buildTooltip(item),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                );
-              }).toList(),
-            ),
-          ),
+                ),
+              ),
+            );
+          }).toList(),
         ),
         const SizedBox(height: 16),
         // X-axis labels - always visible at bottom

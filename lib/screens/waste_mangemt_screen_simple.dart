@@ -8,14 +8,14 @@ import 'package:iungo_application/widgets/custom_appbar_widget.dart';
 import '../theme/app_theme.dart';
 import '../theme/app_colors.dart';
 
-class WasteManagementScreen1 extends StatefulWidget {
-  const WasteManagementScreen1({super.key});
+class WasteManagementScreen extends StatefulWidget {
+  const WasteManagementScreen({super.key});
 
   @override
-  State<WasteManagementScreen1> createState() => _WasteManagementScreen1State();
+  State<WasteManagementScreen> createState() => _WasteManagementScreen1State();
 }
 
-class _WasteManagementScreen1State extends State<WasteManagementScreen1>
+class _WasteManagementScreen1State extends State<WasteManagementScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 

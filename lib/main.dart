@@ -9,6 +9,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Configure system UI to handle notches and safe areas
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
+  
   await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
@@ -19,6 +30,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+    );
+    
     return MultiProvider(
       providers: ProviderHelperClass.instance.providerLists,
       child: ScreenUtilInit(
@@ -38,6 +53,15 @@ class MyApp extends StatelessWidget {
               ),
               useMaterial3: true,
             ),
+            builder: (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  // Ensure proper padding for safe areas
+                  padding: MediaQuery.of(context).padding,
+                ),
+                child: child!,
+              );
+            },
             home: const SplashScreen(),
           );
         },
