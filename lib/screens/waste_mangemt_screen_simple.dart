@@ -22,7 +22,7 @@ class _WasteManagementScreen1State extends State<WasteManagementScreen1>
   @override
   void initState() {
     super.initState();
-    log('Initializing WasteManagementScreen1 with TabController');
+    log('Initializing WasteManagementScreen1a with TabController');
     _tabController = TabController(
       length: 4,
       vsync: this,
