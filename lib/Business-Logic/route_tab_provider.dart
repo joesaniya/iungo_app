@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iungo_application/models/waste_modals.dart';
 import 'package:iungo_application/services/waste_management_service.dart';
 
-
 class RouteTabProvider extends ChangeNotifier {
   final WasteManagementService _service = WasteManagementService();
 
@@ -32,18 +31,32 @@ class RouteTabProvider extends ChangeNotifier {
   // Initialize filters
   Future<void> initializeFilters() async {
     if (filtersLoaded) return;
-    
+
     isLoading = true;
     notifyListeners();
 
     try {
+      print('📥 Fetching zones...');
       zones = await _service.fetchZones();
+      print('✅ Zones loaded: ${zones.length} items');
+
+      print('📥 Fetching vehicles...');
       vehicles = await _service.fetchVehicles();
+      print('✅ Vehicles loaded: ${vehicles.length} items');
+
+      print('📥 Fetching routes...');
       routes = await _service.fetchRoutes();
+      print('✅ Routes loaded: ${routes.length} items');
+
+      print('📥 Fetching regions...');
       regions = await _service.fetchRegions();
+      print('✅ Regions loaded: ${regions.length} items');
+
       filtersLoaded = true;
+
+      print('🎉 All filters loaded successfully!');
     } catch (e) {
-      print('Error loading filters: $e');
+      print('❌ Error loading filters: $e');
     }
 
     isLoading = false;

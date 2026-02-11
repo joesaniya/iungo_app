@@ -1,7 +1,5 @@
-
 import 'package:iungo_application/Data-Provider/dio-client.dart';
 import 'package:iungo_application/models/waste_modals.dart';
-
 
 class WasteManagementService {
   final DioClient _dioClient = DioClient();
@@ -16,8 +14,31 @@ class WasteManagementService {
     );
 
     if (response?.statusCode == 200 && response?.data != null) {
-      final List data = response!.data['zones'] ?? [];
-      return data.map((e) => FilterOption.fromJson(e)).toList();
+      // Handle both array and object response formats
+      dynamic data = response!.data;
+      List items = [];
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map) {
+        // Try common keys: zones, data, result
+        items = data['zones'] ?? data['data'] ?? data['result'] ?? [];
+      }
+
+      return items
+          .map((e) {
+            if (e is String) {
+              return FilterOption(id: e, name: e);
+            } else if (e is Map) {
+              return FilterOption(
+                id: e['id']?.toString() ?? e['name']?.toString() ?? '',
+                name: e['name']?.toString() ?? e['zone']?.toString() ?? '',
+              );
+            }
+            return FilterOption(id: '', name: '');
+          })
+          .where((option) => option.name.isNotEmpty)
+          .toList();
     }
     return [];
   }
@@ -31,8 +52,29 @@ class WasteManagementService {
     );
 
     if (response?.statusCode == 200 && response?.data != null) {
-      final List data = response!.data['vehicles'] ?? [];
-      return data.map((e) => FilterOption.fromJson(e)).toList();
+      dynamic data = response!.data;
+      List items = [];
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map) {
+        items = data['vehicles'] ?? data['data'] ?? data['result'] ?? [];
+      }
+
+      return items
+          .map((e) {
+            if (e is String) {
+              return FilterOption(id: e, name: e);
+            } else if (e is Map) {
+              return FilterOption(
+                id: e['id']?.toString() ?? e['name']?.toString() ?? '',
+                name: e['name']?.toString() ?? e['vehicle']?.toString() ?? '',
+              );
+            }
+            return FilterOption(id: '', name: '');
+          })
+          .where((option) => option.name.isNotEmpty)
+          .toList();
     }
     return [];
   }
@@ -46,8 +88,29 @@ class WasteManagementService {
     );
 
     if (response?.statusCode == 200 && response?.data != null) {
-      final List data = response!.data['routes'] ?? [];
-      return data.map((e) => FilterOption.fromJson(e)).toList();
+      dynamic data = response!.data;
+      List items = [];
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map) {
+        items = data['routes'] ?? data['data'] ?? data['result'] ?? [];
+      }
+
+      return items
+          .map((e) {
+            if (e is String) {
+              return FilterOption(id: e, name: e);
+            } else if (e is Map) {
+              return FilterOption(
+                id: e['id']?.toString() ?? e['name']?.toString() ?? '',
+                name: e['name']?.toString() ?? e['route']?.toString() ?? '',
+              );
+            }
+            return FilterOption(id: '', name: '');
+          })
+          .where((option) => option.name.isNotEmpty)
+          .toList();
     }
     return [];
   }
@@ -61,8 +124,29 @@ class WasteManagementService {
     );
 
     if (response?.statusCode == 200 && response?.data != null) {
-      final List data = response!.data['regions'] ?? [];
-      return data.map((e) => FilterOption.fromJson(e)).toList();
+      dynamic data = response!.data;
+      List items = [];
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map) {
+        items = data['regions'] ?? data['data'] ?? data['result'] ?? [];
+      }
+
+      return items
+          .map((e) {
+            if (e is String) {
+              return FilterOption(id: e, name: e);
+            } else if (e is Map) {
+              return FilterOption(
+                id: e['id']?.toString() ?? e['name']?.toString() ?? '',
+                name: e['name']?.toString() ?? e['region']?.toString() ?? '',
+              );
+            }
+            return FilterOption(id: '', name: '');
+          })
+          .where((option) => option.name.isNotEmpty)
+          .toList();
     }
     return [];
   }
@@ -76,8 +160,29 @@ class WasteManagementService {
     );
 
     if (response?.statusCode == 200 && response?.data != null) {
-      final List data = response!.data['vehicles'] ?? [];
-      return data.map((e) => FilterOption.fromJson(e)).toList();
+      dynamic data = response!.data;
+      List items = [];
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map) {
+        items = data['vehicles'] ?? data['data'] ?? data['result'] ?? [];
+      }
+
+      return items
+          .map((e) {
+            if (e is String) {
+              return FilterOption(id: e, name: e);
+            } else if (e is Map) {
+              return FilterOption(
+                id: e['id']?.toString() ?? e['name']?.toString() ?? '',
+                name: e['name']?.toString() ?? e['vehicle']?.toString() ?? '',
+              );
+            }
+            return FilterOption(id: '', name: '');
+          })
+          .where((option) => option.name.isNotEmpty)
+          .toList();
     }
     return [];
   }
@@ -91,8 +196,32 @@ class WasteManagementService {
     );
 
     if (response?.statusCode == 200 && response?.data != null) {
-      final List data = response!.data['disposal_areas'] ?? [];
-      return data.map((e) => FilterOption.fromJson(e)).toList();
+      dynamic data = response!.data;
+      List items = [];
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map) {
+        items = data['disposal_areas'] ?? data['data'] ?? data['result'] ?? [];
+      }
+
+      return items
+          .map((e) {
+            if (e is String) {
+              return FilterOption(id: e, name: e);
+            } else if (e is Map) {
+              return FilterOption(
+                id: e['id']?.toString() ?? e['name']?.toString() ?? '',
+                name:
+                    e['name']?.toString() ??
+                    e['disposal_area']?.toString() ??
+                    '',
+              );
+            }
+            return FilterOption(id: '', name: '');
+          })
+          .where((option) => option.name.isNotEmpty)
+          .toList();
     }
     return [];
   }
@@ -106,8 +235,30 @@ class WasteManagementService {
     );
 
     if (response?.statusCode == 200 && response?.data != null) {
-      final List data = response!.data['waste_types'] ?? [];
-      return data.map((e) => FilterOption.fromJson(e)).toList();
+      dynamic data = response!.data;
+      List items = [];
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map) {
+        items = data['waste_types'] ?? data['data'] ?? data['result'] ?? [];
+      }
+
+      return items
+          .map((e) {
+            if (e is String) {
+              return FilterOption(id: e, name: e);
+            } else if (e is Map) {
+              return FilterOption(
+                id: e['id']?.toString() ?? e['name']?.toString() ?? '',
+                name:
+                    e['name']?.toString() ?? e['waste_type']?.toString() ?? '',
+              );
+            }
+            return FilterOption(id: '', name: '');
+          })
+          .where((option) => option.name.isNotEmpty)
+          .toList();
     }
     return [];
   }
@@ -138,7 +289,7 @@ class WasteManagementService {
         'to_date': toDate ?? '',
         'view_name': viewName,
       };
-    } 
+    }
     // For activity tab
     else {
       requestBody = {
