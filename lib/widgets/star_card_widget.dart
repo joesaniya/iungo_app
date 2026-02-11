@@ -29,14 +29,15 @@ class StatCard extends StatelessWidget {
         children: [
           Text(
             value,
-            style: AppTheme.h2.copyWith(
-              fontSize: 34,
+            style: AppTheme.h1.copyWith(
+              fontSize: 56,
               color: valueColor,
-              fontWeight: FontWeight.w500,
-              height: 40 / 34,
+              fontWeight: FontWeight.w400,
+              height: 1.0,
+              letterSpacing: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             label,
             style: AppTheme.pLight.copyWith(
